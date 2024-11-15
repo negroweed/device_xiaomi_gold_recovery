@@ -78,11 +78,11 @@ jobs:
       run: |
         sudo apt update
         sudo apt -y upgrade
-        sudo apt -y install gperf gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev \
+        sudo apt -y install gperf gcc-multilib g++-multilib libc6-dev-i386 libncurses-dev \
         x11proto-dev libx11-dev tree lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc bc \
-        libreadline-dev:i386 liblz4-tool libncurses5-dev libsdl2-dev libwxgtk3.2-dev \
-        libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp \
-        qemu-user-static libstdc++-12-dev libncurses-dev python3 python-is-python3
+        libreadline-dev liblz4-tool libtinfo5 libsdl2-dev libwxgtk3.2-dev libxml2 \
+        lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp \
+        libstdc++-12-dev libncurses5 python3 python-is-python3
 
     - name: Install OpenJDK
       uses: actions/setup-java@v3
