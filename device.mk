@@ -1,3 +1,4 @@
+#
 # Copyright (C) 2022 The TWRP Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,78 +16,105 @@
 
 DEVICE_PATH := device/xiaomi/gold
 
-# Dynamic
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
-
-# V A/B
-ENABLE_VIRTUAL_AB := true
+# API
+PRODUCT_SHIPPING_API_LEVEL := 31
+PRODUCT_TARGET_VNDK_VERSION := 31
 
 # A/B
 AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS += \
     boot \
     dtbo \
-    product \
     system \
-    vbmeta \
-    vbmeta_system \
-    vbmeta_vendor \
+    product \
     vendor \
-    vendor_boot
+    odm \
+    odm_dlkm \
+    vbmeta \
+    vendor_boot \
+    vendor_dlkm \
+    vbmeta_system \
+    vbmeta_vendor
+    
+PRODUCT_PACKAGES += \
+    update_engine \
+    update_engine_sideload \
+    update_verifier \
+    checkpoint_gc
 
-# VNDK
-PRODUCT_TARGET_VNDK_VERSION := 32
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_system=true \
+    POSTINSTALL_PATH_system=system/bin/mtk_plpath_utils \
+    FILESYSTEM_TYPE_system=ext4 \
+    POSTINSTALL_OPTIONAL_system=true
 
-# API
-PRODUCT_SHIPPING_API_LEVEL := 32
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_vendor=true \
+    POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+    FILESYSTEM_TYPE_vendor=ext4 \
+    POSTINSTALL_OPTIONAL_vendor=true
+
+# Additional Target Libraries
+TARGET_RECOVERY_DEVICE_MODULES += \
+    android.hardware.keymaster@4.1
+
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1.so
 
 # Bootctrl
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-mtkimpl \
     android.hardware.boot@1.2-mtkimpl.recovery
 
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.2-impl \
+    android.hardware.boot@1.2-impl.recovery \
+    android.hardware.boot@1.2-service    
+
 PRODUCT_PACKAGES_DEBUG += \
     bootctrl
 
-# Fastbootd
-PRODUCT_PACKAGES += \
-    fastbootd \
-    android.hardware.fastboot@1.0-impl-mock
+# Dynamic
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
-# Health Hal
+# Drm
 PRODUCT_PACKAGES += \
-    android.hardware.health@2.1-impl \
-    android.hardware.health@2.1-service
-    
-AB_OTA_POSTINSTALL_CONFIG += \
-    RUN_POSTINSTALL_system=true \
-    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
-    FILESYSTEM_TYPE_system=erofs \
-    POSTINSTALL_OPTIONAL_system=true
+    android.hardware.drm@1.4
 
-PRODUCT_PACKAGES_DEBUG += \
-    update_engine_client
-
+# Health
 PRODUCT_PACKAGES += \
-    otapreopt_script \
-    cppreopts.sh \
-    update_engine \
-    update_verifier \
-    update_engine_sideload
+    android.hardware.health@1.0 \
+    android.hardware.health@2.0
 
-# MTK PlPath Utils
+# HIDL
+PRODUCT_ENFORCE_VINTF_MANIFEST := true
+
+# Keymaster
 PRODUCT_PACKAGES += \
+    android.hardware.keymaster@4.1
+
+# Keymint
+PRODUCT_PACKAGES += \
+    android.hardware.security.keymint \
+    android.hardware.security.secureclock \
+    android.hardware.security.sharedsecret
+
+# Keystore2
+PRODUCT_PACKAGES += \
+    android.system.keystore2
+
+# Mtk plpath utils
+PRODUCT_PACKAGES += \
+    mtk_plpath_utils \
     mtk_plpath_utils.recovery
 
-# Additional binaries & libraries needed for recovery
-TARGET_RECOVERY_DEVICE_MODULES += \
-    libion \
-    libpuresoftkeymasterdevice
-
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so
-    
 # Otacert
 PRODUCT_EXTRA_RECOVERY_KEYS += \
     $(DEVICE_PATH)/security/miui_releasekey
+
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
+
+# TW Additional libs
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1.so
