@@ -1,46 +1,40 @@
 #
-# Copyright (C) 2022 The TWRP Open Source Project
+# Copyright (C) 2022 The LineageOS Project
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 #
 
-DEVICE_PATH := device/xiaomi/gold
+# Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 
-# API
-PRODUCT_SHIPPING_API_LEVEL := 31
-PRODUCT_TARGET_VNDK_VERSION := 31
+# Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
-# A/B
+# Enable project quotas and casefolding for emulated storage without sdcardfs
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+
+# Enable Virtual A/B OTA
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
+
+ENABLE_VIRTUAL_AB := true
 AB_OTA_UPDATER := true
+
 AB_OTA_PARTITIONS += \
     boot \
     dtbo \
-    system \
-    product \
-    vendor \
+    lk \
     odm \
     odm_dlkm \
-    vbmeta \
-    vendor_boot \
-    vendor_dlkm \
+    product \
+    system \
+    system_ext \
     vbmeta_system \
-    vbmeta_vendor
-
-PRODUCT_PACKAGES += \
-    update_engine \
-    update_engine_sideload \
-    update_verifier \
-    checkpoint_gc
+    vbmeta_vendor \
+    vendor \
+    vendor_boot \
+    vendor_dlkm
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -54,63 +48,68 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_vendor=ext4 \
     POSTINSTALL_OPTIONAL_vendor=true
 
-# Additional Target Libraries
-TARGET_RECOVERY_DEVICE_MODULES += \
-    android.hardware.keymaster@4.1
+PRODUCT_PACKAGES += \
+    otapreopt_script \
+    cppreopts.sh
 
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1.so
+PRODUCT_PROPERTY_OVERRIDES += ro.twrp.vendor_boot=true
 
-# Bootctrl
+# Dynamic Partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+# API
+PRODUCT_SHIPPING_API_LEVEL := 31
+PRODUCT_TARGET_VNDK_VERSION := 31
+
+# Boot control HAL
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-mtkimpl \
     android.hardware.boot@1.2-mtkimpl.recovery
 
-PRODUCT_PACKAGES += \
-    android.hardware.boot@1.2-impl \
-    android.hardware.boot@1.2-impl.recovery \
-    android.hardware.boot@1.2-service
-
 PRODUCT_PACKAGES_DEBUG += \
     bootctrl
 
-# Dynamic
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
-
-# Drm
+# Fastbootd
 PRODUCT_PACKAGES += \
-    android.hardware.drm@1.4
+    android.hardware.fastboot@1.0-impl-mock \
+    fastbootd
 
-# Health
+# Health Hal
 PRODUCT_PACKAGES += \
-    android.hardware.health@1.0 \
-    android.hardware.health@2.0
-
-# HIDL
-PRODUCT_ENFORCE_VINTF_MANIFEST := true
+    android.hardware.health@2.1-impl \
+    android.hardware.health@2.1-service
 
 # Keymaster
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@4.1
 
-# Keymint
+# Keystore Hal
+PRODUCT_PACKAGES += \
+    android.system.keystore2
+
+# MTK plpath utils
+PRODUCT_PACKAGES += \
+    mtk_plpath_utils \
+    mtk_plpath_utils.recovery
+
+# Security
 PRODUCT_PACKAGES += \
     android.hardware.security.keymint \
     android.hardware.security.secureclock \
     android.hardware.security.sharedsecret
 
-# Keystore2
+# Update engine
 PRODUCT_PACKAGES += \
-    android.system.keystore2
+    update_engine \
+    update_engine_sideload \
+    update_verifier
 
-# Mtk plpath utils
-PRODUCT_PACKAGES += \
-    mtk_plpath_utils \
-    mtk_plpath_utils.recovery
+PRODUCT_PACKAGES_DEBUG += \
+    update_engine_client
 
-# Soong namespaces
-PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
-
-# TW Additional libs
+# Additional configs
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1.so
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.1
+
+TARGET_RECOVERY_DEVICE_MODULES += \
+    android.hardware.keymaster@4.1
