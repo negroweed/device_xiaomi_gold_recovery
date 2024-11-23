@@ -12,8 +12,7 @@ service miteelog /vendor/bin/miteelog
     seclabel u:r:recovery:s0
 
 service keymint-mitee /vendor/bin/hw/android.hardware.security.keymint@1.0-service.mitee
-    interface android.hardware.keymaster@4.0::IKeymasterDevice default
-    interface android.hardware.keymaster@4.1::IKeymasterDevice default
+    early_hal
     user root
     group root drmrpc
     disabled
@@ -53,3 +52,4 @@ on post-fs-data
     chmod 0755 /data/vendor/thh
     chown system system /data/vendor/thh
     write /proc/bootprof "init miteelog"
+    start miteelog
