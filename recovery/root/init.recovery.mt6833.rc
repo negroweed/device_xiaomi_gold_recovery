@@ -1,9 +1,5 @@
 import /init.mitee.rc
 
-# Set SELinux to Permissive
-on early-init
-    write /sys/fs/selinux/enforce 0
-
 on init
     setprop sys.usb.configfs 1
     setprop sys.usb.controller "musb-hdrc"
