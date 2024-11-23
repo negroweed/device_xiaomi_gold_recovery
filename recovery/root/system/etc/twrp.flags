@@ -59,3 +59,9 @@
 # Removable Storage
 /external_sd        auto  /dev/block/mmcblk1p1  /dev/block/mmcblk0p1     flags=display="MicroSD Card";storage;wipeingui;removable
 /usb_otg            auto  /dev/block/sda1 /dev/block/sda /dev/block/sdd1 flags=display="USB-OTG";storage;wipeingui;removable
+
+# Flashable logical partitions
+/system_image	         emmc		/dev/block/mapper/system								  flags=display="System Image";slotselect;backup;flashimg
+/vendor_image	         emmc		/dev/block/mapper/vendor									flags=display="Vendor Image";slotselect;backup;flashimg
+/system_ext_image      emmc		/dev/block/mapper/system_ext							flags=display="System_EXT Image";slotselect;backup;flashimg
+/product_image         emmc   /dev/block/mapper/product									flags=display="Product Image";slotselect;backup;flashimg
