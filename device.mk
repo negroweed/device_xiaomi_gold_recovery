@@ -40,12 +40,6 @@ AB_OTA_PARTITIONS += \
     vendor_dlkm
 
 AB_OTA_POSTINSTALL_CONFIG += \
-    RUN_POSTINSTALL_system=true \
-    POSTINSTALL_PATH_system=system/bin/mtk_plpath_utils \
-    FILESYSTEM_TYPE_system=ext4 \
-    POSTINSTALL_OPTIONAL_system=true
-
-AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
     POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
     FILESYSTEM_TYPE_vendor=ext4 \
@@ -89,11 +83,6 @@ PRODUCT_PACKAGES += \
 # Keystore Hal
 PRODUCT_PACKAGES += \
     android.system.keystore2
-
-# MTK plpath utils
-PRODUCT_PACKAGES += \
-    mtk_plpath_utils \
-    mtk_plpath_utils.recovery
 
 # Security
 PRODUCT_PACKAGES += \
