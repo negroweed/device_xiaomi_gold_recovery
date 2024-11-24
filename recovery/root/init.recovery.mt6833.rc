@@ -1,4 +1,5 @@
 import /init.mitee.rc
+import /init.vibrator.rc
 
 # Set SELinux to Permissive
 on early-init
@@ -49,10 +50,19 @@ on post-fs
     exec u:r:update_engine:s0 root root -- /system/bin/mtk_plpath_utils
     start mtk.plpath.utils.link
 
+# Services
 service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     class main
     user root
     group root system
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service keymint-mitee /vendor/bin/hw/android.hardware.security.keymint@1.0-service.mitee
+    early_hal
+    user root
+    group root drmrpc
     disabled
     oneshot
     seclabel u:r:recovery:s0
@@ -64,6 +74,7 @@ service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-ser
     group root
     disabled
     seclabel u:r:recovery:s0
+#####
 
 on property:crypto.ready=1
     start keymint-mitee

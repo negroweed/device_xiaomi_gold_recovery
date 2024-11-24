@@ -11,14 +11,6 @@ service miteelog /vendor/bin/miteelog
     disabled
     seclabel u:r:recovery:s0
 
-service keymint-mitee /vendor/bin/hw/android.hardware.security.keymint@1.0-service.mitee
-    early_hal
-    user root
-    group root drmrpc
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
-
 # tee-supplicant
 on fs
     write /proc/bootprof "init tee-supplicant"
