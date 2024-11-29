@@ -15,7 +15,7 @@ on:
       DEVICE_TREE:
         description: 'Custom Recovery Tree' # Your already made Device Tree for TWRP
         required: true
-        default: 'https://github.com/negroweed/device_xiaomi_gold_recovery'
+        default: 'https://github.com/negroweed/device_xiaomi_gold_twrp'
       DEVICE_TREE_BRANCH:
         description: 'Custom Recovery Tree Branch' # Your Device Tree Branch, make sure it's right.
         required: true
@@ -110,7 +110,7 @@ jobs:
     - name: Repo Sync
       run: |
         cd android-recovery
-        repo sync -j$(nproc --all) --force-sync
+        repo sync -j$(nproc --all) --force-sync --current-branch --clone-bundle --optimized-fetch --prune
       
     - name: Clone Device Tree
       run: |
