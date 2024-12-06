@@ -1,5 +1,5 @@
+#!/usr/bin/env bash
 export LC_ALL="C"
-
 export TARGET_ARCH="arm64"
 
 # Some about us
@@ -10,7 +10,6 @@ export OF_MAINTAINER="eraselk"
 export FOX_BUILD_DEVICE="gold"
 export FOX_VARIANT="Test"
 export FOX_BUILD_TYPE="Unofficial"
-export ALLOW_MISSING_DEPENDENCIES=true
 export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
 export TARGET_DEVICE_ALT="gold"
 
@@ -28,9 +27,6 @@ export OF_FLASHLIGHT_ENABLE=0
 export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
 export OF_DONT_PATCH_ENCRYPTED_DEVICE=1
 export OF_FBE_METADATA_MOUNT_IGNORE=1
-
-# Keymaster
-export OF_DEFAULT_KEYMASTER_VERSION="4.1"
 
 # We have a/b partitions
 export FOX_AB_DEVICE=1
@@ -71,8 +67,9 @@ export OF_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR=1
 export OF_DISABLE_MIUI_OTA_BY_DEFAULT=1
 
 # Magisk
-wget https://github.com/topjohnwu/Magisk/releases/download/v27.0/Magisk-v27.0.apk -O ~/Magisk.zip
-export FOX_USE_SPECIFIC_MAGISK_ZIP="~/Magisk.zip"
+MAGISK_VERSION="27.0"
+wget https://github.com/topjohnwu/Magisk/releases/download/v27.0/Magisk-v${MAGISK_VERSION}.apk -O ~/Magisk.zip
+export FOX_USE_SPECIFIC_MAGISK_ZIP=~/Magisk/Magisk-v26.4.zip
 
 # Dont install AROMAFM
 export FOX_DELETE_AROMAFM=1
