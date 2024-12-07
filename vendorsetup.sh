@@ -62,14 +62,9 @@ export OF_QUICK_BACKUP_LIST="/boot;/data;/super;/vendor_boot;"
 
 # OTA & MIUI
 export OF_NO_MIUI_PATCH_WARNING=1
-# export OF_SUPPORT_ALL_BLOCK_OTA_UPDATES=1
+#export OF_SUPPORT_ALL_BLOCK_OTA_UPDATES=1
 export OF_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR=1
 export OF_DISABLE_MIUI_OTA_BY_DEFAULT=1
-
-# Magisk
-MAGISK_VERSION="27.0"
-wget https://github.com/topjohnwu/Magisk/releases/download/v27.0/Magisk-v${MAGISK_VERSION}.apk -O ~/Magisk.zip
-export FOX_USE_SPECIFIC_MAGISK_ZIP=~/Magisk/Magisk-v26.4.zip
 
 # Dont install AROMAFM
 export FOX_DELETE_AROMAFM=1
