@@ -1,5 +1,6 @@
 import /init.mitee.rc
 import /init.vibrator.rc
+import /init.hal.rc
 
 # Set SELinux to Permissive
 on early-init
@@ -24,7 +25,7 @@ on late-fs
     mount_all /first_stage_ramdisk/fstab.mt6833 --late
 
 on post-fs
-    start boot-hal-1-2
+    start vendor.boot-hal-1-2
 
     # Support A/B feature for EMMC and UFS boot region
     wait /dev/block/mmcblk0boot0 2
@@ -74,6 +75,7 @@ service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-ser
     group root
     disabled
     seclabel u:r:recovery:s0
+
 #####
 
 on property:crypto.ready=1
@@ -109,5 +111,5 @@ on property:crypto.ready=0
     stop miteelog
 
 on boot
-    start health-hal-2-1
+    start vendor.health-hal-2-1
     setprop sys.usb.config adb
