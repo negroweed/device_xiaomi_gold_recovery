@@ -48,7 +48,7 @@
 /lib/modules/spi_slave.ko:
 /lib/modules/mtk-kpd.ko:
 /lib/modules/clk-mt6833-vcodec.ko: /lib/modules/clk-common.ko /lib/modules/aee_aed.ko /lib/modules/mrdump.ko
-/lib/modules/mt6359p_battery.ko: /lib/modules/pmic_lbat_service.ko /lib/modules/mtk_charger_framework.ko /lib/modules/adapter_class.ko /lib/modules/charger_class.ko /lib/modules/mtk_charger_algorithm_class.ko /lib/modules/tcpc_class.ko /lib/modules/pd_dbg_info.ko /lib/modules/mtk_disp_notify.ko
+/lib/modules/mt6359p_battery.ko: /lib/modules/pmic_lbat_service.ko /lib/modules/mtk_charger_framework.ko /lib/modules/adapter_class.ko /lib/modules/charger_class.ko /lib/modules/mtk_charger_algorithm_class.ko /lib/modules/mtk_disp_notify.ko
 /lib/modules/pinctrl-mtk-common-v2_debug.ko: /lib/modules/pinctrl-mtk-v2.ko
 /lib/modules/mtk_cpuhp.ko:
 /lib/modules/mtk_panel_ext.ko:
